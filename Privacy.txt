@@ -1,0 +1,443 @@
+================================================================================
+                           CLEARQR PRIVACY POLICY
+================================================================================
+
+Last Updated: January 2026
+
+This privacy policy describes how ClearQR ("we", "our", or "the app") collects,
+uses, and protects your information across all platforms: Browser Extension,
+iOS App, and macOS App.
+
+================================================================================
+                              TABLE OF CONTENTS
+================================================================================
+
+1. Overview
+2. Data We Collect
+3. How Data Is Stored
+4. Permissions We Request
+5. Third-Party Services
+6. Data Retention
+7. Your Rights and Controls
+8. Security Measures
+9. Platform-Specific Details
+10. Changes to This Policy
+11. Contact Information
+
+================================================================================
+                              1. OVERVIEW
+================================================================================
+
+ClearQR is a privacy-focused QR code scanner that analyzes QR codes for
+potential security risks. Our core principle is LOCAL-FIRST PROCESSING:
+
+- All QR code detection happens on your device
+- All URL risk analysis is performed locally using heuristic patterns
+- No QR code content is transmitted to external servers by default
+- No analytics or tracking services are used
+- No advertising networks are integrated
+
+================================================================================
+                           2. DATA WE COLLECT
+================================================================================
+
+ACROSS ALL PLATFORMS, WE COLLECT:
+--------------------------------------------------------------------------------
+
+A. QR CODE CONTENT
+   - The text or URL extracted from scanned QR codes
+   - This is stored locally to provide scan history functionality
+
+B. SCAN METADATA
+   - Timestamp of each scan
+   - Whether the content is a URL or plain text
+   - Content length and preview (first 50 characters)
+
+C. RISK ANALYSIS RESULTS
+   - Risk level classification (Low, Medium, High)
+   - Risk score (0-100 point scale)
+   - Detected risk indicators (e.g., "URL Shortener", "IP Address")
+
+PLATFORM-SPECIFIC DATA:
+--------------------------------------------------------------------------------
+
+BROWSER EXTENSION:
+   - Page URL where QR code was found
+   - Page title where QR code was found
+   - Domain extracted from QR code URL
+
+iOS APP:
+   - Device name (stored in local audit logs only)
+   - Device vendor ID (stored in local audit logs only)
+   - App version and build number (in audit logs)
+   - User actions (scans, copies, URL opens - in local audit logs)
+
+macOS APP:
+   - Hostname and username (stored in local audit logs only)
+   - App version (in audit logs)
+   - User actions (scans, copies, URL opens - in local audit logs)
+   - Temporary screen captures (in memory only, never saved to disk)
+
+DATA WE DO NOT COLLECT:
+--------------------------------------------------------------------------------
+   - Location data
+   - Contact information
+   - Photos or camera roll access
+   - Microphone audio
+   - Biometric data
+   - Personal identifiers beyond device/vendor IDs
+   - Browsing history outside of QR scanning activity
+   - Advertising identifiers
+
+================================================================================
+                          3. HOW DATA IS STORED
+================================================================================
+
+ALL DATA IS STORED LOCALLY ON YOUR DEVICE.
+
+BROWSER EXTENSION:
+--------------------------------------------------------------------------------
+   - Storage: Browser's IndexedDB (database named "ClearQRHistory")
+   - Location: Managed by your browser's local storage
+   - Encryption: Standard browser storage encryption
+   - Maximum items: Up to 10,000 scan records (100 displayed in UI)
+
+iOS APP:
+--------------------------------------------------------------------------------
+   - Scan History: UserDefaults (iOS standard key-value storage)
+     Location: ~/Library/Preferences/
+     Maximum items: 100 most recent scans
+
+   - Audit Logs: Local file system
+     Location: ~/Documents/AuditLogs/
+     Format: JSON files organized by date (audit_yyyy-MM-dd.json)
+     Maximum entries: 10,000
+
+macOS APP:
+--------------------------------------------------------------------------------
+   - Scan History: UserDefaults
+     Location: ~/Library/Preferences/
+     Maximum items: 100 most recent scans
+
+   - Audit Logs: Local file system
+     Location: ~/Library/Application Support/ClearQR/AuditLogs/
+     Format: JSON files organized by date
+     Maximum entries: 10,000 per file
+
+   - SIEM API Keys (if configured): macOS Keychain
+     Protected with kSecAttrAccessibleAfterFirstUnlock
+
+CLOUD STORAGE:
+--------------------------------------------------------------------------------
+   - No iCloud synchronization
+   - No cloud backup of app data
+   - No remote server storage
+
+NOTE: Browser extension data may sync via your browser's built-in extension
+sync feature (e.g., Chrome Sync) if you have that enabled - this is controlled
+by your browser settings, not by ClearQR.
+
+================================================================================
+                        4. PERMISSIONS WE REQUEST
+================================================================================
+
+BROWSER EXTENSION:
+--------------------------------------------------------------------------------
+
+   REQUIRED PERMISSIONS:
+   - activeTab: To capture and scan QR codes visible on your current tab
+   - storage: To store scan history and settings locally
+   - clipboardWrite: To allow copying URLs to your clipboard
+
+   OPTIONAL PERMISSIONS:
+   - desktopCapture: Reserved for potential future full-screen scanning
+   - tabs: For querying tab information
+
+iOS APP:
+--------------------------------------------------------------------------------
+
+   REQUIRED PERMISSIONS:
+   - Camera: "ClearQR needs access to your camera to scan QR codes and
+     analyze them for security risks."
+
+   The camera is used ONLY for:
+   - Real-time QR code detection
+   - No photos are taken or stored
+   - No video is recorded
+   - Camera feed is never transmitted anywhere
+
+macOS APP:
+--------------------------------------------------------------------------------
+
+   REQUIRED PERMISSIONS:
+   - Screen Recording: "ClearQR needs screen recording permission to capture
+     and scan QR codes displayed on your screen."
+
+   Screen capture details:
+   - Captures only the area beneath the app window
+   - Excludes the app's own window from capture
+   - Captures occur every 300ms while scanning
+   - Images are held in memory only (never saved to disk)
+   - Images are cleared when scanning stops
+
+   SANDBOX ENTITLEMENTS:
+   - App Sandbox: Enabled for security isolation
+   - User-selected file access: For exporting audit logs
+   - Network client: For optional SIEM integration only
+
+================================================================================
+                        5. THIRD-PARTY SERVICES
+================================================================================
+
+DEFAULT BEHAVIOR (ALL PLATFORMS):
+--------------------------------------------------------------------------------
+
+By default, ClearQR makes NO external network connections for:
+   - Analytics or telemetry
+   - Crash reporting
+   - Advertising
+   - User tracking
+   - Threat intelligence lookups
+   - QR code content transmission
+
+All URL risk analysis is performed locally using pattern-matching heuristics.
+We do NOT query external threat databases or security services.
+
+INCLUDED LIBRARIES:
+--------------------------------------------------------------------------------
+
+   BROWSER EXTENSION:
+   - jsQR: Open-source QR code detection library (bundled locally)
+
+   iOS APP:
+   - Uses only native Apple frameworks (AVFoundation, SwiftUI, UIKit)
+   - No third-party SDKs
+
+   macOS APP:
+   - Uses only native Apple frameworks (ScreenCaptureKit, Vision, SwiftUI)
+   - No third-party SDKs
+
+OPTIONAL ENTERPRISE FEATURE (macOS ONLY):
+--------------------------------------------------------------------------------
+
+The macOS app includes optional SIEM (Security Information and Event
+Management) integration for enterprise deployments. When configured by
+the user:
+
+   - Audit logs can be forwarded to external SIEM platforms
+   - Supported protocols: Syslog over TLS, HTTPS Webhook
+   - Supported formats: RFC 5424 Syslog, JSON, CEF
+   - All connections use TLS 1.2 or higher
+   - API keys are stored securely in macOS Keychain
+
+   Data forwarded to SIEM (when enabled):
+   - All audit log entries
+   - Scanned QR content
+   - Risk analysis results
+   - User actions and timestamps
+   - Hostname and username
+
+   THIS FEATURE IS DISABLED BY DEFAULT and requires manual configuration.
+
+EXTERNAL LINKS:
+--------------------------------------------------------------------------------
+The app contains links to:
+   - https://clearqr.exnoscan.com (Product website)
+   - https://clearqr.exnoscan.com/privacy.txt (This privacy policy)
+
+These links only open when you explicitly click them.
+
+================================================================================
+                          6. DATA RETENTION
+================================================================================
+
+BROWSER EXTENSION:
+--------------------------------------------------------------------------------
+   - Scan history: Retained until manually cleared by user
+   - No automatic expiration
+   - Data removed when extension is uninstalled
+
+iOS APP:
+--------------------------------------------------------------------------------
+   - Scan history: Retained until manually cleared (max 100 items)
+   - Audit logs: 30 days by default (automatic cleanup)
+   - Cleanup runs daily
+
+macOS APP:
+--------------------------------------------------------------------------------
+   - Scan history: Retained until manually cleared (max 100 items)
+   - Audit logs: 30 days by default (configurable 1-365 days)
+   - Automatic cleanup enabled by default
+
+TEMPORARY DATA:
+--------------------------------------------------------------------------------
+   - Screen captures (macOS): Cleared immediately when scanning stops
+   - Camera feed (iOS): Never stored, processed in real-time only
+
+================================================================================
+                       7. YOUR RIGHTS AND CONTROLS
+================================================================================
+
+YOU CAN:
+--------------------------------------------------------------------------------
+
+   VIEW YOUR DATA:
+   - Access complete scan history in the app
+   - View all audit logs (iOS/macOS)
+   - Search and filter audit entries
+
+   DELETE YOUR DATA:
+   - Clear all scan history
+   - Clear all audit logs
+   - Delete individual history items
+
+   EXPORT YOUR DATA:
+   - Export audit logs in multiple formats (iOS/macOS):
+     * JSON format
+     * Syslog (RFC 5424) format
+     * CEF (Common Event Format)
+   - Exported via system share sheet (you control the destination)
+
+   CONTROL DATA RETENTION (macOS):
+   - Configure retention period (1-365 days)
+   - Enable/disable automatic cleanup
+   - Set maximum log entries
+
+   REVOKE PERMISSIONS:
+   - Disable camera access (iOS) via Settings > Privacy > Camera
+   - Disable screen recording (macOS) via System Settings > Privacy >
+     Screen Recording
+   - Disable extension (Browser) via browser extension settings
+
+================================================================================
+                         8. SECURITY MEASURES
+================================================================================
+
+LOCAL PROCESSING:
+--------------------------------------------------------------------------------
+   - All QR detection happens on-device
+   - All risk analysis uses local heuristic algorithms
+   - No data transmitted for analysis
+
+SECURE STORAGE:
+--------------------------------------------------------------------------------
+   - iOS: Standard iOS data protection
+   - macOS: App Sandbox enabled, Keychain for sensitive data
+   - Browser: Standard browser storage isolation
+
+NETWORK SECURITY (when SIEM enabled):
+--------------------------------------------------------------------------------
+   - TLS 1.2+ required for all connections
+   - Server certificate validation by default
+   - Mutual TLS certificate support available
+   - API keys stored in macOS Keychain (not in plain text)
+
+CODE SECURITY:
+--------------------------------------------------------------------------------
+   - Browser extension uses Manifest V3 (modern security standard)
+   - No remote code execution
+   - No eval() or dynamic script injection
+
+================================================================================
+                      9. PLATFORM-SPECIFIC DETAILS
+================================================================================
+
+BROWSER EXTENSION - RISK ANALYSIS:
+--------------------------------------------------------------------------------
+
+The extension analyzes URLs using these local heuristics:
+
+HIGH RISK INDICATORS (+60-100 points):
+   - JavaScript URLs (potential code execution)
+   - Data URIs with suspicious payloads
+   - Credential injection patterns (@ symbol in URL)
+
+MEDIUM RISK INDICATORS (+25-50 points):
+   - IP addresses instead of domain names
+   - Homoglyph/lookalike characters (visual spoofing)
+   - Brand impersonation patterns (PayPal, Amazon, Microsoft, Google,
+     Apple, Netflix, Facebook, Instagram)
+   - Known URL shorteners (bit.ly, tinyurl, t.co, goo.gl, etc.)
+
+LOW RISK INDICATORS (+10-20 points):
+   - Non-HTTPS connections
+   - Excessive subdomains (>3 levels)
+   - Uncommon TLDs (.xyz, .tk, .club, etc.)
+   - Heavy URL encoding
+   - Unusually long URLs (>200 characters)
+   - Sensitive keywords in path
+   - Non-standard port numbers
+
+IMPORTANT: This analysis is heuristic-based and does not guarantee safety.
+A low risk score does not mean a URL is safe. Always exercise caution.
+
+iOS APP - AUDIT LOG EVENTS:
+--------------------------------------------------------------------------------
+
+The following actions are logged locally:
+   - APP_LAUNCHED / APP_TERMINATED
+   - PERMISSION_GRANTED / PERMISSION_DENIED
+   - QR_CODE_SCANNED
+   - QR_CODE_COPIED
+   - URL_OPENED
+   - HISTORY_VIEWED
+   - HISTORY_CLEARED / HISTORY_ITEM_DELETED
+   - SETTINGS_CHANGED
+   - AUDIT_LOG_EXPORTED / AUDIT_LOG_CLEANUP
+
+macOS APP - ADDITIONAL FEATURES:
+--------------------------------------------------------------------------------
+
+SIEM Integration (Enterprise):
+   - Disabled by default
+   - User-configurable host, port, protocol
+   - Supports RFC 5424 Syslog, JSON, CEF formats
+   - Batch transmission (default: 10 logs per batch)
+   - 30-second flush interval
+   - Secure credential storage via Keychain
+
+================================================================================
+                      10. CHANGES TO THIS POLICY
+================================================================================
+
+We may update this privacy policy from time to time. Changes will be reflected
+in the "Last Updated" date at the top of this document. Continued use of
+ClearQR after changes constitutes acceptance of the updated policy.
+
+For significant changes that affect how we handle your data, we will provide
+notice through:
+   - Updated version notes in app stores
+   - In-app notification (where applicable)
+   - Update to the privacy policy page on our website
+
+================================================================================
+                       11. CONTACT INFORMATION
+================================================================================
+
+For questions about this privacy policy or ClearQR's data practices:
+
+   Website: https://clearqr.exnoscan.com
+   Privacy Policy: https://clearqr.exnoscan.com/privacy.txt
+
+================================================================================
+                              SUMMARY
+================================================================================
+
+ClearQR is designed with privacy as a core principle:
+
+   [X] All processing happens locally on your device
+   [X] No analytics or tracking
+   [X] No advertising
+   [X] No third-party SDKs (except optional enterprise SIEM)
+   [X] No cloud storage of your data
+   [X] No transmission of QR content to external servers (by default)
+   [X] You control your data (view, delete, export)
+   [X] Minimal permissions requested
+   [X] Open about what we collect and why
+
+Your scanned QR codes, browsing behavior, and personal information stay on
+your device unless you explicitly choose to export or forward them.
+
+================================================================================
+                     END OF PRIVACY POLICY
+================================================================================
